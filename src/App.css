@@ -166,9 +166,12 @@
   justify-content: center;
   align-items: center;
   border: 2px solid black;
+  width:60%;
+  aspect-ratio: 1/1;
 }
 
 .dotBody{
+  position:absolute;
   width: calc(0.2 * var(--btnSize));
   aspect-ratio: 1/1;
   background: #070720;
@@ -176,7 +179,11 @@
 }
 
 .snake_body i{
+  position: absolute;
   font-size: 1.7rem;
   color: #070720;
   top:0;
+}
+.me{
+  color:#00aa47;
 }
