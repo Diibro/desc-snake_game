@@ -3,6 +3,7 @@ import {AiOutlineArrowDown as Down, AiOutlineArrowLeft as Left, AiOutlineArrowRi
 import {GiDragonHead} from 'react-icons/gi'
 import Logo from "../assets/Logo_noback.png"
 
+
 const ControlBtn = ({children, ClickHangler, Ref, styles}) =>{
 
      return(
@@ -49,6 +50,14 @@ const Body = () => {
           status: 1,
           display:"flex"
      })
+     const [controls, setControls] = useState({
+          width:"100px",
+          Left: {top:"0%", left: "0%", width: "100%"},
+          Right: {top:"0%", left: "0%", width: "100%"}, 
+          Up: {top:"0%", left: "0%", width: "100%"}, 
+          Down: {top:"0%", left: "0%", width: "100%"},
+          Center: {width:"100%", "z-index": "99"}
+     })
 
      //Refs
      const dotRef = useRef(null) // gettting the snake head
@@ -70,12 +79,29 @@ const Body = () => {
      const GameControl = () => {
           if(stBtn === "Continue"){
                //setMove(temp)
-               
+               setControls((prev) => ({
+                    ...prev,
+                    width:"clamp(200px, 20%, 600px)",
+                    Left: {left:"-12.5%", top:"35%",width: "clamp(40px, 30%, 100px)"},
+                    Right: {right:"-12.5%", top:"35%", width: "clamp(40px, 30%, 100px)"}, 
+                    Up: {left:"35%", top:"-12.5%", width: "clamp(40px, 30%, 100px)"}, 
+                    Down: {left:"35%", bottom:"-12.5%", width: "clamp(40px, 30%, 100px)"},
+                    Center: {width:"40%", "z-index": "99"}
+               }))
                setSnakeHead((prev) => ({...prev, move: lastMove}))
                btnRef.current.style.background = '#aa6000'
                setStBtn("Stop")
           }
           if(stBtn === "Stop"){
+               setControls((prev) => ({
+                    ...prev,
+                    width:"100px",
+                    Left: {top:"0%", left: "0%", width: "100%"},
+                    Right: {top:"0%", left: "0%", width: "100%"}, 
+                    Up: {top:"0%", left: "0%", width: "100%"}, 
+                    Down: {top:"0%", left: "0%", width: "100%"},
+                    Center: {width:"100%", "z-index": "99"}
+               }))
                setSnakeHead((prev) => ({...prev, move: 0, temp: 1}))
                btnRef.current.style.background = '#00aa47'
                setStBtn("Continue")
@@ -83,11 +109,23 @@ const Body = () => {
           if(stBtn === "Start"){
                setCover((prev) => ({...prev, status: 0, display: "none"}))
                btnRef.current.style.background = '#aa6000'
+               setControls((prev) => ({
+                    ...prev,
+                    width:"clamp(200px, 20%, 600px)",
+                    Left: {left:"-12.5%", top:"35%",width: "clamp(40px, 30%, 100px)"},
+                    Right: {right:"-12.5%", top:"35%", width: "clamp(40px, 30%, 100px)"}, 
+                    Up: {left:"35%", top:"-12.5%", width: "clamp(40px, 30%, 100px)"}, 
+                    Down: {left:"35%", bottom:"-12.5%", width: "clamp(40px, 30%, 100px)"},
+                    Center: {width:"40%", "z-index": "99"}
+               }))
                setSnakeHead((prev) => ({...prev, pos: {x: moveTarget(6, 30) * 3, y: moveTarget(6,19) * 5}}))
                setStBtn("Stop")
           }
           if(stBtn === "Game Over"){
-               btnRef.current.style.background = 'red'
+               btnRef.current.style.background = '#13869b'
+               setSnakeBody({})
+               setSnakeHead((prev) => ({...prev, count:0}))
+               setStBtn("Start")
           }
           
      }
@@ -167,7 +205,16 @@ const Body = () => {
                if((lastMove === 1 && snakeHead.pos.x >= 100.5) || (lastMove === -1 && snakeHead.pos.x <= -0.5) || (lastMove === -2 && snakeHead.pos.y >= 100.5) || (lastMove === 2 && snakeHead.pos.y <= -0.5) ){
                     setSnakeHead((prev) => ({...prev, move: 0, temp: 1}))
                     setStBtn("Game Over")
-                    btnRef.current.style.background = 'red'
+                    btnRef.current.style.background = '#ff0055'
+                    setControls((prev) => ({
+                         ...prev,
+                         width:"140px",
+                         Left: {top:"0%", left: "0%", width: "100%"},
+                         Right: {top:"0%", left: "0%", width: "100%"}, 
+                         Up: {top:"0%", left: "0%", width: "100%"}, 
+                         Down: {top:"0%", left: "0%", width: "100%"},
+                         Center: {width:"100%", "z-index": "99"}
+                    }))
                }
                //setSnakeHead((prev) => ({...prev, count: snakeHead.count + 1}))
           }
@@ -206,15 +253,26 @@ const Body = () => {
                     </div>
                     <div className='screenCover' ref={coverRef} style={{display: cover.display}} > <img className='Cover-Logo' src={Logo} alt="CompanyImage" /> </div>
                </div>
-               <div className='controls'>
-                    <ControlBtn styles={{left:"-12.5%", top:"35%"}} ClickHangler={() => snakeHead.move === 1 ? setSnakeHead((prev) => ({...prev, move:1})) : setSnakeHead((prev) => ({...prev, move:-1}))} ><Left /></ControlBtn>
-                    <ControlBtn styles={{left:"35%", top:"-12.5%"}}  ClickHangler={() => snakeHead.move === -2 ? setSnakeHead((prev) => ({...prev, move:-2})) : setSnakeHead((prev) => ({...prev, move:2}))} ><Up /></ControlBtn>
-                    <ControlBtn styles={{width:"40%"}}   ClickHangler={GameControl} Ref={btnRef} ><h6 onMouseOver={changeWhite} ref={title}>{stBtn}</h6></ControlBtn>
-                    <ControlBtn styles={{right:"-12.5%", top:"35%"}}  ClickHangler={() => snakeHead.move === -1 ? setSnakeHead((prev) => ({...prev, move:-1})) : setSnakeHead((prev) => ({...prev, move:1}))} ><Right /></ControlBtn>
-                    <ControlBtn styles={{left:"35%", bottom:"-12.5%"}}  ClickHangler={() => snakeHead.move === 2 ? setSnakeHead((prev) => ({...prev, move:2})) : setSnakeHead((prev) => ({...prev, move:-2}))} ><Down /></ControlBtn>
+               <div className='controls' style={{width:controls.width}} >
+                    <ControlBtn styles={controls.Left} ClickHangler={() => snakeHead.move === 1 ? setSnakeHead((prev) => ({...prev, move:1})) : setSnakeHead((prev) => ({...prev, move:-1}))} ><Left /></ControlBtn>
+                    <ControlBtn styles={controls.Up}  ClickHangler={() => snakeHead.move === -2 ? setSnakeHead((prev) => ({...prev, move:-2})) : setSnakeHead((prev) => ({...prev, move:2}))} ><Up /></ControlBtn>
+                    <ControlBtn styles={controls.Center}   ClickHangler={GameControl} Ref={btnRef} ><h6 onMouseOver={changeWhite} ref={title}>{stBtn}</h6></ControlBtn>
+                    <ControlBtn styles={controls.Right}  ClickHangler={() => snakeHead.move === -1 ? setSnakeHead((prev) => ({...prev, move:-1})) : setSnakeHead((prev) => ({...prev, move:1}))} ><Right /></ControlBtn>
+                    <ControlBtn styles={controls.Down}  ClickHangler={() => snakeHead.move === 2 ? setSnakeHead((prev) => ({...prev, move:2})) : setSnakeHead((prev) => ({...prev, move:-2}))} ><Down /></ControlBtn>
                </div>
           </div>
      )
 }
 
 export default Body
+
+
+/*
+ <div className='controls' style={{width:controls.width}} >
+                    <ControlBtn styles={{left:"-12.5%", top:"35%"}} ClickHangler={() => snakeHead.move === 1 ? setSnakeHead((prev) => ({...prev, move:1})) : setSnakeHead((prev) => ({...prev, move:-1}))} ><Left /></ControlBtn>
+                    <ControlBtn styles={{left:"35%", top:"-12.5%"}}  ClickHangler={() => snakeHead.move === -2 ? setSnakeHead((prev) => ({...prev, move:-2})) : setSnakeHead((prev) => ({...prev, move:2}))} ><Up /></ControlBtn>
+                    <ControlBtn styles={{width:"40%"}}   ClickHangler={GameControl} Ref={btnRef} ><h6 onMouseOver={changeWhite} ref={title}>{stBtn}</h6></ControlBtn>
+                    <ControlBtn styles={{right:"-12.5%", top:"35%"}}  ClickHangler={() => snakeHead.move === -1 ? setSnakeHead((prev) => ({...prev, move:-1})) : setSnakeHead((prev) => ({...prev, move:1}))} ><Right /></ControlBtn>
+                    <ControlBtn styles={{left:"35%", bottom:"-12.5%"}}  ClickHangler={() => snakeHead.move === 2 ? setSnakeHead((prev) => ({...prev, move:2})) : setSnakeHead((prev) => ({...prev, move:-2}))} ><Down /></ControlBtn>
+               </div>
+*/
