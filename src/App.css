@@ -1,3 +1,5 @@
+
+
 @keyframes moveUp {
   0%{
     top:100%
@@ -34,19 +36,37 @@
   }
 }
 
+
+
+body{
+  width:100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 :root{
   --padding:100px;
   --round:50px;
   --btnSize: 100px;
   font-size:20px;
+  --width:20px; 
+}
+
+
+
+#root{
+  width: 100%;
 }
 
 .app{
-  width: 80%;
-  height: 100%;
+  width: 95%;
   margin: auto;
   box-sizing: border-box;
-  background: #fab18ff6;
+  background: #1c3b44f6;
+
 }
 
 .header{
@@ -54,7 +74,7 @@
   display: flex;
   width: 100%;
   flex-direction: row;
-  background: rgba(255, 1, 99, 0.397);
+  background: #28292985;
   justify-content: space-between;
   align-items: center;
   padding: 0 calc( 0.4 * var(--padding));
@@ -62,7 +82,7 @@
 }
 
 .Logo_container{
-  width: 10%;
+  width: clamp(100px,10%, 300px);
 }
 
 .Logo_container img{
@@ -80,7 +100,7 @@
 
 .game_name h3{
 
-  color:rgb(58, 105, 167);
+  color:rgb(19, 134, 155);
   font-size:2rem;
 }
 
@@ -110,53 +130,95 @@
 }
 
 .body{
+  position: relative;
   width: 98%;
-  height: 70vh;
+  padding: 3% 0;
   margin: 10px auto;
   border-radius: calc(0.5 * var(--round));
-  background: rgb(255, 255, 255);
+  background: url("./assets/Gamebak.jpg");
+  background-size: 100%;
+  background-position: center;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+.screenContainer{
+  width: clamp(400px, 50%, 800px);
+  position: relative;
+  background: transparent;
+  margin-bottom:40px;
 }
 
 .screen{
   box-sizing:border-box;
-  width: 60%;
-  height: 80%;
-  background: #68e1ffc2;
+  width: 100%;
+  aspect-ratio: 100/60;
+  background: #065a69da;
   border-radius: calc(0.2 * var(--round));
   position: relative;
   overflow: hidden;
   padding:2%;
   overflow: hidden;
 }
+.screenCover{
+  position: absolute;
+  box-sizing: border-box;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 100/60;
+  background:linear-gradient(60deg, rgb(185, 42, 97), rgb(34, 62, 94));
+  z-index: 99;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+  border: 2px solid rgb(8, 62, 124);
+  border-radius: calc(0.2 * var(--round));
+  transition: all 1s;
+  top: 0;
+
+}
+.Cover-Logo{
+  width: 40%;
+}
 
 .controls{
-  width:30%;
-  height: 80%;
+  position: relative;
+  width:clamp(200px, 20%, 600px);
+  aspect-ratio: 1/1;
   display: flex;
   position: relative;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+  border: 2px solid #68e1ffc2;
+  border-radius: 50%;
+  margin: 20px;
 }
 
 .control-btn{
-  width:calc(1 * var(--btnSize));
+  position: absolute;
+  width:clamp(40px, 30%, 100px);
   aspect-ratio: 1/1;
   border-radius: 50%;
   background:#509ce2;
   color:white;
   font-size: 1.3rem;
+  font-weight: bolder;
   border:none;
+  transition: all 0.5s;
 }
 
 .control-btn:hover{
-  color:#509ce2;
-  background:honeydew;
-  border: 1px solid #509ce2;
+  box-sizing: border-box;
+  color:#0ea0a0;
+  background:rgba(138, 206, 218, 0.418);
+  border: 2px solid #509ce2;
   cursor: pointer;
 }
 
@@ -166,25 +228,74 @@
   justify-content: center;
   align-items: center;
   border: 2px solid black;
-  width:60%;
+  width:100%;
   aspect-ratio: 1/1;
 }
 
 .dotBody{
   position:absolute;
-  width: calc(0.2 * var(--btnSize));
+  /*width: calc(0.2 * var(--btnSize));*/
+  width:3%;
   aspect-ratio: 1/1;
   background: #070720;
-  border-radius: 5px;
+  border-radius: 50%;
+  transition:all 0.5s;
 }
 
-.snake_body i{
+.snakeHead{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
   position: absolute;
-  font-size: 1.7rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width:3%;
+  aspect-ratio: 1/1;
+  font-size:100%;
   color: #070720;
   top:0;
+  transition:all 0.5s;
 }
 .me{
   color:#00aa47;
   color:#64ffda;
+}
+
+.snakeBody{
+  position: absolute;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  border-radius:50%;
+  width:3%;
+  aspect-ratio: 1/1;
+  background:#070720;
+  color: white;
+  overflow: hidden;
+  transition: all 0.5s;
+}
+
+@media only screen and (max-width: 1000px){
+  :root{
+    font-size: 15px;
+    --btnSize:15px;
+  }
+ 
+  .app{
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 768px){
+  :root{
+    font-size: 10px;
+    --btnSize:10px;
+  }
+  
 }
